@@ -1,0 +1,21 @@
+<svg viewBox="0 0 64 64"
+     fill="none"
+     stroke="currentColor"
+     stroke-width="3"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+  <!-- Nube -->
+  <path d="M20 40
+           a10 10 0 0 1 0 -20
+           a14 14 0 0 1 26 4
+           a8 8 0 0 1 0 16
+           Z"/>
+
+  <!-- Gotas -->
+  <line x1="26" y1="46" x2="26" y2="54"/>
+  <line x1="34" y1="46" x2="34" y2="54"/>
+  <line x1="42" y1="46" x2="42" y2="54"/>
+
+</svg>
+

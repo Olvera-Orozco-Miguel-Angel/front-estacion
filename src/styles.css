@@ -1,0 +1,42 @@
+/* You can add global styles to this file, and also import other style files */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* rgb(50, 50, 50); rgb(27, 27, 27)
+background: rgb(15, 15,15);
+rgb(220, 220, 220); se ve blanco con este fondo
+
+conic-gradient(at left top, rgb(17, 24, 39), rgb(75, 85, 99))
+background: linear-gradient(to right, rgb(15, 23, 42), rgb(88, 28, 135), rgb(15, 23, 42));SE VE COMO MORADITO
+
+aquí se muestra en gris y negro
+background: #232526;   fallback for old browsers
+background: -webkit-linear-gradient(to right, #414345, #232526);
+background: linear-gradient(to right, #414345, #232526);
+
+
+*/
+body{
+  background: #eaeaea ;
+
+
+ font-family: 'Inter', sans-serif;
+    font-style: normal;
+/*overflow: hidden;
+
+linear-gradient(to right, rgb(15, 23, 42), rgb(88, 28, 135), rgb(15, 23, 42))
+#0A090C
+*/
+
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* rgb(50, 50, 50); rgb(27, 27, 27)
+background: rgb(15, 15,15);
+rgb(220, 220, 220); se ve blanco con este fondo
+*/

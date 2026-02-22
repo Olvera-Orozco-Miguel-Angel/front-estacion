@@ -1,0 +1,338 @@
+<div class="contenedor-barra" >
+<div class="barra">
+  <div class="img-titulo">
+    <img class="img-barra" src="/assets/iconCCAI.jpeg">
+
+    <h1>Estación Tese</h1>
+  </div>
+<P>Av. Tecnológico SN Col, Valle de Anahuac, 55210 Ecatepec de Morelos, Méx.
+</P>
+
+</div>
+</div>
+
+
+
+<div class="container-pattern">
+  <div class="advertencia" >
+<span class="material-icons">error</span>
+    <p >
+    Los datos mostrados provienen de sensores de bajo costo operados de forma independiente.
+    Pueden presentar errores y no sustituyen información oficial.
+  </p>
+  </div>
+
+  <div class="resumen" >
+<span class="material-icons">check_circle</span>
+    <h2>Estado del ambiente:Bueno</h2>
+  </div>
+
+
+  <h3>Datos ambientales</h3>
+
+
+  <div class="containergrid">
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">Humedad</h2>
+        <div class="imagenes-svg" >
+<svg viewBox="0 0 64 64" fill="none"
+     stroke="currentColor"
+     stroke-width="3"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+  <path d="M32 8 C32 8 14 28 14 40 a18 18 0 0 0 36 0 C50 28 32 8 32 8 Z"/>
+  <path d="M24 42 a8 8 0 0 0 16 0"/>
+</svg>
+
+        </div>
+      </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="humedad" type="arch" [thick]="11" cap="round" [max]="100" [size]=186 
+        [foregroundColor]="colorHumedad"
+          label="%">
+        </ngx-gauge>
+      </div>
+      <div class="flex-container">
+          <p>Últ. act.: {{horaGrupoB}}</p>
+          <p class="indices">{{descripcionHumedad}}</p>
+      </div>
+      
+    </div>
+
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">Temperatura</h2>
+     <div class="imagenes-svg"> 
+<svg viewBox="0 0 64 128"
+     width="40"
+     height="40"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Contorno exterior -->
+  <path d="M32 10
+           a12 12 0 0 1 12 12
+           v60
+           a20 20 0 1 1 -24 0
+           v-60
+           a12 12 0 0 1 12 -12 z"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+</svg>
+</div>
+
+
+      </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="temperatureValue" type="arch" [thick]="11" cap="round" [max]=50 [size]=200 label="C°"
+      
+        [foregroundColor]="temperaturaColor" > 
+        </ngx-gauge>
+      </div>
+      <div class="flex-container">
+<p>Últ. act.: {{horaGrupoA}}</p>
+<p>{{temperaturaDescripcion}}</p>
+      </div>
+      
+
+    </div>
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">Presión Barometrica</h2>
+<div  class="imagenes-svg">
+<svg viewBox="0 0 64 64" fill="none"
+     stroke="currentColor"
+     stroke-width="3"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+  <circle cx="32" cy="32" r="22"/>
+  <line x1="32" y1="32" x2="46" y2="24"/>
+  <circle cx="32" cy="32" r="3" fill="currentColor" stroke="none"/>
+</svg>
+
+
+</div>
+      </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="temperatureValue" type="arch" [thick]="11" cap="round" [max]="1020" [size]="200"
+          [foregroundColor]="presionColor">
+        </ngx-gauge>
+
+      </div>
+
+         <div class="flex-container">
+          <p>Últ. act.: {{horaGrupoA}}</p>
+          <p>{{presionDescripcion}}</p>
+      </div>
+     
+
+    </div>
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">Altitud</h2>
+          <div class="imagenes-svg" >
+<svg viewBox="0 0 64 64" fill="none"
+     stroke="currentColor"
+     stroke-width="3"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+  <path d="M8 48 L24 24 L40 48 Z"/>
+  <path d="M24 24 L32 14 L40 24"/>
+</svg>
+
+          </div>
+      </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="altitudeValue" type="arch" [thick]="11" cap="round" [max]=3500 [size]=200
+          [foregroundColor]="altitudColor">
+        </ngx-gauge>
+      </div>
+
+         <div class="flex-container">
+  <p>Últ. act.: {{horaGrupoA}}</p>
+<p>{{altitudDescripcion}}</p>
+      </div>
+
+    
+
+    </div>
+
+
+  </div>
+
+  <div class="containergrid">
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">Vientos</h2>
+        <div class="imagenes-svg" >
+          <svg viewBox="0 0 64 64" fill="currentColor" 
+     stroke="currentColor"
+     stroke-width="3"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+  <path d="M8 28 H40 a6 6 0 1 0 -6 -6"/>
+  <path d="M8 36 H48 a6 6 0 1 1 -6 6"/>
+  <path d="M8 44 H34"/>
+</svg>
+
+        </div>
+      </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="windSpeed" type="semi" [thick]="13" cap="round" [size]="220" label={{directionSocket}}
+          append="km/h">
+        </ngx-gauge>
+      </div>
+      <p>Últ. act.: {{horaGrupoB}}</p>
+
+    </div>
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">Rayos UV</h2>
+<div class="imagenes-svg" >
+<svg viewBox="0 0 64 64" fill="none"
+     stroke="currentColor"
+     stroke-width="3"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+
+  <circle cx="32" cy="32" r="10"/>
+  <line x1="32" y1="6" x2="32" y2="16"/>
+  <line x1="32" y1="48" x2="32" y2="58"/>
+  <line x1="6" y1="32" x2="16" y2="32"/>
+  <line x1="48" y1="32" x2="58" y2="32"/>
+  <line x1="14" y1="14" x2="20" y2="20"/>
+  <line x1="44" y1="44" x2="50" y2="50"/>
+  <line x1="44" y1="20" x2="50" y2="14"/>
+  <line x1="14" y1="50" x2="20" y2="44"/>
+</svg>
+
+</div>  
+    </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="ryValue" type="arch" [thick]="11" cap="round" [max]=11 [size]="200"
+          [foregroundColor]="colorUv" [duration]="2000">
+        </ngx-gauge>
+      </div>
+
+         <div class="flex-container">
+<p>Últ. act.: {{horaGrupoA}}</p>
+<p>{{descripcionUv}}</p>
+      </div>
+      
+
+    </div>
+
+  </div>
+
+  <h3>Contaminantes</h3>
+
+
+
+
+  <div class="containergrid">
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">PM10</h2>
+        <span> Regular </span>
+      </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="pm1" type="arch" [thick]="11" cap="round" [max]=300 [size]=200 foregroundColor="#3333ff">
+        </ngx-gauge>
+      </div>
+      <p>PM-12h </p>
+    </div>
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">PM2.5</h2>
+        <span> Regular </span>
+      </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="pm2_5" type="arch" [thick]="11" cap="round" [max]=300 [size]=200 foregroundColor="#ce929d">
+        </ngx-gauge>
+      </div>
+      <p>PM-12h </p>
+
+    </div>
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">PM1.0</h2>
+        <span> Regular </span>
+      </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="pm10" type="arch" [thick]="11" cap="round" [max]=300 [size]=200 foregroundColor="#4c195a">
+        </ngx-gauge>
+      </div>
+      <p>PM-12h </p>
+    </div>
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">Ozono</h2>
+        <span> Regular </span>
+      </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="o3value" type="arch" [thick]="11" cap="round" [max]=1000 [size]=200
+          foregroundColor="#0077b6" [duration]="1500" label="ppb">
+        </ngx-gauge>
+      </div>
+      <p>Promedio horario </p>
+    </div>
+
+
+  </div>
+  <div class="containergrid">
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">Dioxido de carbono</h2>
+        <span> Regular </span>
+      </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="co2value" type="arch" [thick]="10" cap="round" [max]=1100 [size]=200
+          foregroundColor="#0077b6" label="ppm">
+        </ngx-gauge>
+      </div>
+    </div>
+  </div>
+
+  <h3>Precipitación en un plazo de 24hrs </h3>
+
+
+
+  <div class="containergrid">
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">Precipitación</h2>
+        <span> Regular </span>
+      </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="709" type="arch" [thick]="11" cap="round" [max]=1200 [size]=200
+         [foregroundColor]="'#E74C3C'"
+  [backgroundColor]="'#FADBD8'"> >
+        </ngx-gauge>
+      </div>
+    </div>
+    <div class="gauge__container">
+      <div class="flex-container">
+        <h2 class="contaminatLevel__title contaminatLevel__title--big">TDS</h2>
+        <span> Regular </span>
+      </div>
+      <div class="flex-container contaminatLevel__gauge">
+        <ngx-gauge [value]="tds_tr" type="arch" [thick]="11" cap="round" [max]=1200 [size]=200
+          foregroundColor="#3c5a6f">
+        </ngx-gauge>
+      </div>
+    </div>
+
+
+
+  </div>
+
+
+</div>
