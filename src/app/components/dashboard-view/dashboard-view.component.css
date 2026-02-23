@@ -31,14 +31,14 @@ body{
   height: auto;
   object-fit: cover;
   gap: 20;
- 
+
   border-radius: 10px;
 }
 .advertencia{
   width: 100%;
   height: auto;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   background-color: whitesmoke;
   padding: 10px;
@@ -71,10 +71,9 @@ body{
 }
 */
 .imagenes-svg{
-  width:40px;
-  height: auto;
-    color: #fe6385;   /* ahora sí cambia el color */
 
+    color: #fe6385;   /* ahora sí cambia el color */
+  font-size: 40px;
 }
 .indices{
   padding: 7px;
@@ -86,27 +85,27 @@ body{
 }
 .containergrid{
 
-  
+
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
     gap: 10px;
-    padding: 10px;
-  
-  
+    padding: 5px 0 5px 0;
+
+
 }
 .container-pattern{
-  width: 90%;
+  width: 85%;
   height: 100vh;
   margin:  0 auto;
- 
-  
+
+
 }
 .gauge__container{
   background-color: white;
   border-radius: 4%;
   /*border: 1px solid #7d7d7d;*/
 box-shadow: 10px 4px 12px rgba(0,0,0,0.25);
-    
+
 
 }
 .flex-container{
@@ -132,22 +131,22 @@ box-shadow: 10px 4px 12px rgba(0,0,0,0.25);
 }
 h3{
   text-align: start;
- 
+
   font-size: 24px;
-  
+
 }
 table {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid #ccc;
   background: white;
-  
+
   margin: 10px;
 }
 
 thead{
 
-  
+
   background-color: #fe6385;
   color:white;
 }

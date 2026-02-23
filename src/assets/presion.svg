@@ -1,11 +1,6 @@
-<svg viewBox="0 0 64 64" fill="none"
-     stroke="currentColor"
-     stroke-width="3"
-     stroke-linecap="round"
-     stroke-linejoin="round">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
   <circle cx="32" cy="32" r="22"/>
   <line x1="32" y1="32" x2="46" y2="24"/>
   <circle cx="32" cy="32" r="3" fill="currentColor" stroke="none"/>
 </svg>
-
