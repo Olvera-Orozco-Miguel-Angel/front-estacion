@@ -70,19 +70,8 @@ body{
   color: green;
 }
 */
-.imagenes-svg{
 
-    color: #fe6385;   /* ahora sí cambia el color */
-  font-size: 40px;
-}
-.indices{
-  padding: 7px;
-  background-color: #fe6385;
-  border-radius: 8px;
-  color: aliceblue;
-  font-size: 13px;
-  margin-right: 3px;
-}
+
 .containergrid{
 
 
@@ -137,27 +126,35 @@ h3{
 }
 table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
+  border-spacing: 0;
   border: 1px solid #ccc;
+  border-radius: 12px;
   background: white;
-
-  margin: 10px;
+overflow: hidden;
+  margin:  10px 0px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 thead{
 
 
-  background-color: #fe6385;
-  color:white;
+  background-color: #f4f6f8;
+
 }
 th,td{
   max-width: 1fr;
   text-align:start;
 border: 2px solid white;
 padding: 10px;
+font-weight: 500;
 
 
 
+}
+tr:hover{
+  background-color: aliceblue;
 }
 
 

@@ -10,20 +10,8 @@ import { HostListener } from '@angular/core';
 })
 export class DashboardViewComponent {
 
-    /*
-      arreglos que van a almacenar de la consulta a la base de datos diferentes valores coom la temperatura, los contaminantes
-      */
-  temperatura: any[] = []; // almacena la temperatura
-  pm1DB :number[] = []; // almacena el contaminante pm 1
-  pm_25 :number [] = []; // almacena el contaminante pm 2.5
-  pm_10 :number[] =[]; // almacena el contaminante pm10
-  horas:any[] =[]; // almacena las horas
     horaGrupoB:any;
         horaGrupoA:any;
-
-
-
-
 
 // variables almacenan lo que manda socket.io
   respuesta :any;
@@ -47,15 +35,7 @@ export class DashboardViewComponent {
   registroLluvia:any =0;
 
 
-  gaugeType :any = "semi";
-  gaugeValue = 28.3;
-   // aquí se guarda la consulta realizada por la vista sp_view_weatherdata
-   weather_dataDB :any;
 
-  gauegeThik:any=14;
-  size:any = 400;
-  data :any = 15;
-  arrayPrueba:any = [12, 19, 3, 5, 2, 3];
 
   /*
   @HostListener('window:resize',['$event'])
@@ -100,8 +80,8 @@ this.socket.getGrupoADataSocket().subscribe((message:any)=>{
         hour :'2-digit',
         minute:'2-digit',
      });
-this.configuracionTemperatura();
-this.configuracionUV();
+
+
 });
 this.socket.getGrupoBDataSocket().subscribe((message:any)=>{
 
@@ -110,7 +90,7 @@ this.socket.getGrupoBDataSocket().subscribe((message:any)=>{
     this.altitudeValue = message.altitud;
 
     this.ryValue =Number(  message.uv);
-    this.windSpeed = message.windSpeed;
+    this.windSpeed = Number( message.windSpeed);
     this.o3value = message.ozono;
     this.co2value = message.co2;
     this.directionSocket = message.direction;
@@ -124,6 +104,7 @@ this.socket.getGrupoBDataSocket().subscribe((message:any)=>{
         hour :'2-digit',
         minute:'2-digit',
      });
+  this.configuracionVelocidadViento(Number(this.windSpeed) ?? 0);
 
 });
 
@@ -158,9 +139,8 @@ this.socket.getGrupoBDataSocket().subscribe((message:any)=>{
         minute:'2-digit',
      });
 
-this.configuracionTemperatura();
-this.configuracionUV();
    });
+this.configuracionVelocidadViento(Number(this.windSpeed) ?? 0);
 
 }
 
@@ -173,11 +153,11 @@ ngOnInit(): void {
     this.pressureValue = message.pressure;
     this.altitudeValue = message.altitud;
     this.ryValue =Number(  message.uv);
-    this.pm1 = message.pm10_env ;
-    this.pm2_5 = message.pm25;
-    this.pm10= message.pm100_env;
+   // this.pm1 = message.pm10_env ;
+   // this.pm2_5 = message.pm25;
+   // this.pm10= message.pm100_env;
     this.windSpeed = message.windSpeed;
-    this.o3value = message.ozono;
+    //this.o3value = message.ozono;
     this.co2value = message.co2;
     this.directionSocket = message.direction;
     this.humedad   = message.humedad;
@@ -189,12 +169,17 @@ ngOnInit(): void {
     this.configuracionUV();
     this.configuracionPresion(Number(this.pressureValue));
 this.configuracionAltitud(Number(this.altitudeValue));
+this.configuracionHumedadRelativa(Number( this.humedad));
+this.configuracionCO2(Number(this.co2value));
+this.configuracionVelocidadViento(Number(this.windSpeed)??  0);
+
 
   });
 
 this.data_fetch_service.obtenerPromedioOzono().subscribe(respuesta=>{
 const data = respuesta;
-this.o3value = data[0].ozono;
+this.o3value = data[0].ozono ?? 0;
+this.configuracionOzono(Number(this.o3value ));
 
 });
 this.data_fetch_service.obtenerPromedioParticulas().subscribe(respuesta=>{
@@ -202,6 +187,8 @@ const data = respuesta;
   this.pm1 = data[0].pm1_0 ?? 0;
   this.pm2_5 = data[0].pm2_5 ?? 0;
   this.pm10 = data[0].pm10 ?? 0;
+  this.configuracionParticulas2_5(Number(this.pm2_5));
+this.configuracionParticulasPM10(Number(this.pm10));
 });
 
 //este metodo obtiene los datos de la lluvia y tds, en un plazo de 24 hrs
@@ -209,17 +196,28 @@ this.data_fetch_service.obtenerRainDatos().subscribe(respuesta=>{
   const data  = respuesta;
   const precipitacion_tr = data[0].total_lluvia ?? 0;
   const tds_tr = data[0].promedio_tds ?? 0;
+  this.configuracionLluvia(Number(this.precipitacion_tr));
 
 });
 
 
 }
+
+
+
 ngAfterViewInit():void {
   // Código para el método AfterViewInit
  this.configuracionTemperatura();
 this.configuracionHumedadRelativa(Number(this.humedad));
 this.configuracionPresion(Number(this.pressureValue));
 this.configuracionAltitud(Number(this.altitudeValue));
+this.configuracionOzono(Number(this.o3value ));
+this.configuracionParticulas2_5(Number(this.pm2_5));
+this.configuracionParticulasPM10(Number(this.pm10));
+this.configuracionCO2(Number(this.co2value));
+  this.configuracionLluvia(Number(this.precipitacion_tr));
+  this.configuracionVelocidadViento(Number(this.windSpeed) ?? 0);
+
 }
 
 
@@ -431,20 +429,20 @@ ozonoBgColor:string="";
 configuracionOzono(ozono:number ){
 if(ozono>200) {
    this.ozonoColor = "#8E44AD";
-  this.particulasPM10Descripcion ="Extremo Mala";
+  this.ozonoDescripcion ="Extremo Mala";
 }else if ( ozono >=151) {
  this.ozonoColor = "#E74C3C";
-  this.particulasPM10Descripcion="Muy Mala";
+  this.ozonoDescripcion="Muy Mala";
 }else if (ozono >=101) {
    this.ozonoColor  = "#E67E22";
-  this.particulasPM10Descripcion ="Mala";
+  this.ozonoDescripcion ="Mala";
 }else if (ozono >=51) {
   this.ozonoColor= "#F1C40F";
-  this.particulasPM10Descripcion="Aceptable";
+  this.ozonoDescripcion ="Aceptable";
 
 }else if (ozono >=0 ) {
  this.ozonoColor  = "#2ECC71";
-  this.particulasPM10Descripcion="Buena";
+  this.ozonoDescripcion="Buena";
 }
 this.ozonoBgColor = this.lightenColor(this.ozonoColor,0.75);
 }
@@ -486,7 +484,7 @@ this.co2Descripcion="Bueno";
 this.co2Descripcion="Excelente";
 
 }
-this.ozonoBgColor = this.lightenColor(this.co2Color,0.75);
+this.co2BgColor = this.lightenColor(this.co2Color,0.75);
 }
 
 /*
@@ -507,6 +505,111 @@ this.ozonoBgColor = this.lightenColor(this.co2Color,0.75);
 | 12       | ≥ 118            | Huracán           | Morado oscuro  | #5B2C6F |
 
 */
+velocidaVientoColor :string="";
+velocidadVientoDescripcion:string="";
+velocidadVientoBgColor:string="";
+
+configuracionVelocidadViento(velocidad:number){
+  if(isNaN(velocidad) ){
+    console.warn("Velocidad del viento inválida, checar arduinos",velocidad);
+this.velocidaVientoColor= "#D5D8DC";
+this.velocidadVientoDescripcion= "Sin dato";
+return ;
+  }
+ 
+
+    if (velocidad >= 118 ) {
+    this.velocidaVientoColor = "#5B2C6F";
+    this.velocidadVientoDescripcion ="Huracán";
+  }else if ( velocidad >= 103 ) {
+ this.velocidaVientoColor = "#8E44AD";
+    this.velocidadVientoDescripcion ="Tormenta violenta";
+  }else if ( velocidad >= 89 ) {
+ this.velocidaVientoColor = "#AF7AC5";
+    this.velocidadVientoDescripcion ="Temporal duro";
+  }else if ( velocidad >= 75 ) {
+ this.velocidaVientoColor = "#C0392B";
+    this.velocidadVientoDescripcion ="Temporal fuerte";
+  }
+
+  else if ( velocidad >= 62 ) {
+ this.velocidaVientoColor = "#E74C3C";
+    this.velocidadVientoDescripcion ="Temporal";
+  }
+  else if ( velocidad >= 50 ) {
+ this.velocidaVientoColor = "#EC7063";
+    this.velocidadVientoDescripcion ="Viento muy fuerte";
+  }
+   else if ( velocidad >= 39 ) {
+ this.velocidaVientoColor = "#E67E22";
+    this.velocidadVientoDescripcion ="Viento fuerte";
+  }
+  else if ( velocidad >= 29 ) {
+ this.velocidaVientoColor = "#F39C12";
+    this.velocidadVientoDescripcion ="Brisa fresca";
+  }
+
+   else if ( velocidad >= 20 ) {
+ this.velocidaVientoColor = "#F1C40F";
+    this.velocidadVientoDescripcion ="Brisa moderada";
+  }
+  else if ( velocidad >= 12 ) {
+ this.velocidaVientoColor = "#F7DC6F";
+    this.velocidadVientoDescripcion ="Brisa suave";
+  } else if ( velocidad >= 6 ) {
+ this.velocidaVientoColor = "#82E0AA";
+    this.velocidadVientoDescripcion ="Brisa ligera";
+  }
+  else if ( velocidad >= 1 ) {
+ this.velocidaVientoColor = "#27AE60";
+    this.velocidadVientoDescripcion ="Ventolina";
+  }
+  else if ( velocidad <1 ) {
+ this.velocidaVientoColor = "#1E8449 ";
+    this.velocidadVientoDescripcion ="Calma";
+  }
+  this.velocidadVientoBgColor = this.lightenColor(this.velocidaVientoColor, 0.75);
+  console.log("Estoy busncao ",this.velocidadVientoDescripcion);
+}
+/*
+
+
+| Acumulado 24h | Clasificación | Color       | HEX         |
+| ------------- | ------------- | ----------- | ----------- |
+| 0             | Sin lluvia    | Gris claro  | **#D5D8DC** |
+| 1 – 10        | Ligera        | Azul claro  | **#5DADE2** |
+| 10 – 30       | Moderada      | Azul        | **#2E86C1** |
+| 30 – 60       | Fuerte        | Azul oscuro | **#1B4F72** |
+| > 60          | Muy fuerte    | Morado      | **#4A235A** |
+*/
+
+lluviaColor :string="";
+lluviaDescripcion:string="";
+lluviaBgColor:string="";
+
+configuracionLluvia(precipitacion:number){
+  if (precipitacion>60) {
+this.lluviaColor = "#4A235A";
+this.lluviaDescripcion ="Muy fuerte" ;
+  }else if (precipitacion >30  ) {
+this.lluviaColor = "#1B4F72";
+this.lluviaDescripcion ="Fuerte" ;
+  } else  if(precipitacion>10){
+    this.lluviaColor = "#2E86C1";
+this.lluviaDescripcion ="Moderada" ;
+  }
+  else  if(precipitacion>1){
+    this.lluviaColor = "#5DADE2";
+this.lluviaDescripcion ="Ligera" ;
+  }
+    else  if(precipitacion ==0){
+    this.lluviaColor = "#D5D8DC";
+this.lluviaDescripcion ="Sin lluvia" ;
+  }
+this.lluviaBgColor = this.lightenColor(this.lluviaColor,0.75);
+
+}
+
 
 
 lightenColor(hex:string,percent:number):string{

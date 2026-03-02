@@ -1,1 +1,26 @@
+<div class="gauge__container">
+  <div class="flex-container">
+    <h2 class="contaminatLevel__title ">{{title}}</h2>
+    <div >
+      <span class="material-icons imagenes-svg" [ngStyle]="{ 'color': foreGround }"  >{{icon}}</span>
+    </div>
+  </div>
+  <div class="gauge_header contaminatLevel__gauge">
+    <ngx-gauge [value]="value"
+     type="arch"
+     [thick]="11"
+     cap="round"
+     [max]="maxNumber"
+     [size]=150
+     [foregroundColor]="foreGround"
+     [backgroundColor]="backGround" [append]="append">
+    </ngx-gauge>
 
+  </div>
+
+  <div class="gauge_footer">
+    <p>Últ. act.: {{update}}</p>
+    <p class="indices" [ngStyle]="{'background-color': backGround , 'color': foreGround }">{{index}}</p>
+  </div>
+
+</div>

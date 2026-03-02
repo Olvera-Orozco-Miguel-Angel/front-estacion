@@ -1,0 +1,70 @@
+.gauge__container{
+  background-color: white;
+  border-radius: 4%;
+  /*border: 1px solid #7d7d7d;*/
+box-shadow: 10px 4px 12px rgba(0,0,0,0.25);
+
+
+}
+
+.gauge__container:hover{
+  cursor: pointer;
+  transform: scale(1.02);
+}
+.flex-container{
+  width: 100%;
+  display:flex ;
+  justify-content: space-between ;
+  align-items: center;
+
+
+}
+.gauge_header{
+  width: 100%;
+  display:flex ;
+  justify-content: space-between ;
+  align-items: center;
+padding-top: 5px;
+padding-left: 3px;
+padding-right: 3px;
+}
+.gauge_footer{
+ width: 100%;
+ height: auto;
+  display:flex ;
+  justify-content: space-between ;
+  align-items: center;
+padding-bottom: 5px;
+padding-left: 3px;
+padding-right: 3px;
+}
+
+.contaminatLevel__title{
+
+  padding-top: 3px;
+  padding-left: 3px;
+  font-size: 18px;
+}
+.imagenes-svg{
+
+    color: #fe6385;   /* ahora sí cambia el color */
+  font-size: 40px;
+}
+
+
+
+.contaminatLevel__gauge{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center; /*contaminant level y flex continaer contienen las mismas instrucciones*/
+}
+
+.indices{
+  padding: 7px;
+  background-color: #fe6385;
+  border-radius: 8px;
+  color: aliceblue;
+  font-size: 13px;
+  margin-right: 3px;
+}

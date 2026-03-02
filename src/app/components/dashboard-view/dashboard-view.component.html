@@ -5,13 +5,10 @@
 
       <h1>Estación Tese</h1>
     </div>
-    <P>Av. Tecnológico SN Col, Valle de Anahuac, 55210 Ecatepec de Morelos, Méx.
-    </P>
+
 
   </div>
 </div>
-
-
 
 <div class="container-pattern">
   <div class="advertencia">
@@ -21,11 +18,13 @@
       Pueden presentar errores y no sustituyen información oficial.
     </p>
   </div>
-
-  <div class="resumen">
+<!--
+ <div class="resumen">
     <span class="material-icons">check_circle</span>
     <h2>Estado del ambiente:Bueno</h2>
   </div>
+
+-->
 
 
   <h3>Datos ambientales</h3>
@@ -33,246 +32,172 @@
 
   <div class="containergrid">
     <!-- ******  Humedad  *** -->
-    <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">Humedad</h2>
-        <div class="imagenes-svg">
-       <span class="material-icons">water_drop</span>
+
+    <app-gauge-card
+    title="Humedad"
+    icon="water_drop"
+    [update]="horaGrupoB"
+    append="%"
+    [index]="descripcionHumedad"
+    [value]="humedad"
+    [foreGround]="colorHumedad"
+    [backGround]="humedadBgColor"
+    [maxNumber]=100
+    >
+    </app-gauge-card>
 
 
-        </div>
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="humedad" type="arch" [thick]="11" cap="round" [max]="100" [size]=200
-          [foregroundColor]="colorHumedad" [backgroundColor]="humedadBgColor" append="%">
-        </ngx-gauge>
-      </div>
-      <div class="flex-container">
-        <p>Últ. act.: {{horaGrupoB}}</p>
-        <p class="indices">{{descripcionHumedad}}</p>
-      </div>
-
-    </div>
 <!-- Temperatura -->
 
-    <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">Temperatura</h2>
-        <div  >
+    <app-gauge-card
+    title="Temperatura"
+    icon="device_thermostat"
+    [update]="horaGrupoA"
+    append="C°"
+    [index]="temperaturaDescripcion"
+    [value]="temperatureValue"
+    [foreGround]="temperaturaColor"
+    [backGround]="temperaturaBgColor"
+    [maxNumber]=50
+    >
+    </app-gauge-card>
 
-<span class="material-icons imagenes-svg ">
-  device_thermostat
-</span>
-</div>
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="temperatureValue" type="arch" [thick]="11" cap="round" [max]=50 [size]=200 append="C°"
-          label="" [backgroundColor]="temperaturaBgColor" [foregroundColor]="temperaturaColor">
-
-        </ngx-gauge>
-      </div>
-      <div class="flex-container">
-        <p>Últ. act.: {{horaGrupoA}}</p>
-        <p>{{temperaturaDescripcion}}</p>
-      </div>
-    </div>
     <!-- Presion barometrica -->
-    <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">Presión Barometrica</h2>
-        <div class="">
-  <span class="material-icons imagenes-svg">speed</span>
 
-
-        </div>
-        <!--Presion  -->
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="temperatureValue" type="arch" [thick]="11" cap="round" [max]="1020" [size]="200"
-          append="hPa" [backgroundColor]="presionBgColor" [foregroundColor]="presionColor">
-        </ngx-gauge>
-
-      </div>
-
-      <div class="flex-container">
-        <p>Últ. act.: {{horaGrupoA}}</p>
-        <p>{{presionDescripcion}}</p>
-      </div>
-
-
-    </div>
-    <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">Altitud</h2>
-        <div class="imagenes-svg">
-      <span class="material-icons">terrain</span>
-
-
-        </div>
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="altitudeValue" type="arch" [thick]="11" cap="round" [max]=3500 [size]=200 append="msnm"
-          [backgroundColor]="altitudBgColor" [foregroundColor]="altitudColor">
-        </ngx-gauge>
-      </div>
-
-      <div class="flex-container">
-        <p>Últ. act.: {{horaGrupoA}}</p>
-        <p>{{altitudDescripcion}}</p>
-      </div>
-
-
-
-    </div>
+  <app-gauge-card
+    title="Presión Barometrica"
+    icon="speed"
+    [update]="horaGrupoA"
+    append="hPa"
+    [index]="presionDescripcion"
+    [value]="pressureValue"
+    [foreGround]="presionColor"
+    [backGround]="presionBgColor"
+    [maxNumber]=1020
+    >
+    </app-gauge-card>
 
 
 
 
-
+    <app-gauge-card
+    title="Altitud"
+    icon="terrain"
+    [update]="horaGrupoA"
+    append="msnm"
+    [index]="altitudDescripcion"
+    [value]="altitudeValue"
+    [foreGround]="altitudColor"
+    [backGround]="altitudBgColor"
+    [maxNumber]=3500
+    >
+    </app-gauge-card>
   </div>
 
   <div class="containergrid">
-    <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">Vientos</h2>
-        <div class="imagenes-svg">
-          <span class="material-icons">air</span>
+<app-gauge-card
+    title="Viento"
+    icon="air"
+    [update]="horaGrupoB"
+    append="km/h"
+    [index]="velocidadVientoDescripcion"
+    [value]="windSpeed"
+  [foreGround]="velocidaVientoColor"
+    [backGround]="velocidadVientoBgColor"
+    [maxNumber]=118
+    >
+    </app-gauge-card>
 
-        </div>
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="windSpeed" type="semi" [thick]="13" cap="round" [max]="118" [size]="220"
-          label={{directionSocket}} append="km/h">
-        </ngx-gauge>
-      </div>
-      <p>Últ. act.: {{horaGrupoB}}</p>
-
-    </div>
     <!-- uv -->
-    <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">Rayos UV</h2>
-        <div class="imagenes-svg">
-     <span class="material-icons">wb_sunny</span>
+    <app-gauge-card
+    title="Rayos UV"
+    icon="wb_sunny"
+    [update]="horaGrupoA"
+    append="Uv"
+    [index]="descripcionUv"
+    [value]="ryValue"
+    [foreGround]="colorUv"
+    [backGround]="uvBgColor"
+    [maxNumber]=11
+    >
+    </app-gauge-card>
 
-
-        </div>
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="ryValue" type="arch" [thick]="11" cap="round" [max]=11 [size]="200"
-          [foregroundColor]="colorUv" [backgroundColor]="uvBgColor" append="Uv" [duration]="2000">
-
-        </ngx-gauge>
-      </div>
-
-      <div class="flex-container">
-        <p>Últ. act.: {{horaGrupoA}}</p>
-        <p>{{descripcionUv}}</p>
-      </div>
-
-
-    </div>
-
-
-      <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">Precipitación</h2>
-        <div>
-                  <span> Regular </span>
-
-<span class="material-icons">cloud</span>
-
-        </div>
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="709" type="arch" [thick]="11" cap="round" [max]=1200 [size]=200 append="mm"
-          [foregroundColor]="'#E74C3C'" [backgroundColor]="'#FADBD8'"> >
-        </ngx-gauge>
-      </div>
-    </div>
-    <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">TDS</h2>
-        <span> Regular </span>
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="tds_tr" type="arch" [thick]="11" cap="round" [max]=1200 [size]=200 append="tds"
-          foregroundColor="#3c5a6f">
-        </ngx-gauge>
-      </div>
-    </div>
+<!-- Precipitacion -->
+   <app-gauge-card
+    title="Precipitación"
+    icon="cloud"
+    update="Promedio 24 hrs"
+    append="mm"
+    [index]="lluviaDescripcion"
+    [value]="precipitacion_tr"
+    [foreGround]="lluviaColor"
+    [backGround]="lluviaBgColor"
+    [maxNumber]=60
+    >
+    </app-gauge-card>
+    <!-- tds-->
+   <app-gauge-card
+    title="TDS"
+    icon="science"
+    update="Promedio 24 hrs"
+    append="tds"
+    index="Fuerte"
+    [value]="tds_tr"
+    foreGround="E74C3C"
+    backGround="#FADBD8"
+    [maxNumber]=1200
+    >
+    </app-gauge-card>
 
   </div>
 
   <h3>Contaminantes</h3>
 
 
+<table>
+  <thead>
+  <tr>
+    <th>Tipo</th>
+    <th>Cantidad</th>
+    <th>Calidad</th>
+    <th>Tiempo promedio</th>
 
 
-  <div class="containergrid">
-    <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">PM10</h2>
-        <span> Regular </span>
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="pm1" type="arch" [thick]="11" cap="round" [max]=300 [size]=200 foregroundColor="#3333ff">
-        </ngx-gauge>
-      </div>
-      <p>PM-12h </p>
-    </div>
-    <!--Pariticulas 2.5  -->
-    <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">PM2.5</h2>
-        <span> Regular </span>
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="pm2_5" type="arch" [thick]="11" cap="round" [max]=200 [size]=200
-          [foregroundColor]="particulas2_5Color" [backgroundColor]="particulas2_5bgColor">
-        </ngx-gauge>
-      </div>
-      <p>PM-12h </p>
+  </tr>
+  </thead>
+<tbody>
+  <tr>
+      <td> PM 10 </td>
+      <td> {{pm1}} </td>
+      <td [ngStyle]="{'background-color': particulasPM10BGColor , 'color': particulasPM10Color }" > {{particulasPM10Descripcion}} </td>
+      <td> 12h </td>
+  </tr>
 
-    </div>
-    <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">PM1.0</h2>
-        <span> Regular </span>
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="pm10" type="arch" [thick]="11" cap="round" [max]=300 [size]=200 foregroundColor="#4c195a">
-        </ngx-gauge>
-      </div>
-      <p>PM-12h </p>
-    </div>
-    <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">Ozono</h2>
-        <span> Regular </span>
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="o3value" type="arch" [thick]="11" cap="round" [max]=1000 [size]=200
-          foregroundColor="#0077b6" [duration]="1500" label="ppb">
-        </ngx-gauge>
-      </div>
-      <p>Promedio horario </p>
-    </div>
+    <tr>
+      <td> PM 2.5 </td>
+      <td> {{pm2_5}} </td>
+      <td [ngStyle]="{'background-color': particulas2_5bgColor , 'color': particulas2_5Color }" > {{particulas2_5Descripcion }} </td>
+      <td> 12h </td>
+  </tr>
+
+      <tr>
+      <td> Ozono </td>
+      <td> {{o3value }} ppm </td>
+      <td [ngStyle]="{'background-color': ozonoBgColor ,   'color':ozonoColor }" > {{ozonoDescripcion }} </td>
+      <td> 1h </td>
+  </tr>
+
+       <tr>
+      <td> CO2 </td>
+      <td> {{co2value }} ppm</td>
+      <td [ngStyle]="{'background-color': co2BgColor , 'color':co2Color }" > {{co2Descripcion }} </td>
+      <td> 8h </td>
+  </tr>
 
 
-  </div>
-  <div class="containergrid">
-    <div class="gauge__container">
-      <div class="flex-container">
-        <h2 class="contaminatLevel__title contaminatLevel__title--big">Dioxido de carbono</h2>
-        <span> Regular </span>
-      </div>
-      <div class="flex-container contaminatLevel__gauge">
-        <ngx-gauge [value]="co2value" type="arch" [thick]="10" cap="round" [max]=1100 [size]=200
-          foregroundColor="#0077b6" label="ppm">
-        </ngx-gauge>
-      </div>
-    </div>
-  </div>
+</tbody>
 
-</div>
+
+</table>
+
+
