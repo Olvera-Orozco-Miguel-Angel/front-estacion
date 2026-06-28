@@ -1,9 +1,14 @@
 <div class="contenedor-barra">
   <div class="barra">
-    <div class="img-titulo">
+    <div class="img-icono">
       <img class="img-barra" src="/assets/iconCCAI.jpeg">
 
+
       <h1>Estación Tese</h1>
+      <img class="titulo-imagen" src="/assets/clima.png">
+
+
+
     </div>
 
 
@@ -14,11 +19,11 @@
   <div class="advertencia">
     <span class="material-icons">error</span>
     <p>
-      Los datos mostrados provienen de sensores de bajo costo operados de forma independiente.
+      Los datos mostrados provienen de sensores de bajo costo operados de forma independiente y con fines estudiantiles.
       Pueden presentar errores y no sustituyen información oficial.
     </p>
   </div>
-<!--
+  <!--
  <div class="resumen">
     <span class="material-icons">check_circle</span>
     <h2>Estado del ambiente:Bueno</h2>
@@ -27,177 +32,127 @@
 -->
 
 
+  <h3>Contaminantes</h3>
+
+  <div class="table-container">
+
+
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Cantidad</th>
+          <th>Calidad</th>
+          <th>Tiempo promedio</th>
+
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td> PM 10 </td>
+          <td> {{pm1}} µg/m³ </td>
+          <td class="descripcion-tabla"  [ngStyle]="{'background-color': particulasPM10BGColor , 'color': particulasPM10Color }">
+            {{particulasPM10Descripcion}} </td>
+          <td> 12h </td>
+        </tr>
+
+        <tr>
+          <td> PM 2.5 </td>
+          <td> {{pm2_5}} µg/m³ </td>
+          <td  class="descripcion-tabla"  [ngStyle]="{'background-color': particulas2_5bgColor , 'color': particulas2_5Color }" >
+          <p >  {{particulas2_5Descripcion }} </p> </td>
+          <td> 12h </td>
+        </tr>
+
+        <tr>
+          <td> Ozono </td>
+          <td> {{o3value }} ppm </td>
+          <td class="descripcion-tabla" [ngStyle]="{'background-color': ozonoBgColor ,   'color':ozonoColor }"> <p >{{ozonoDescripcion }} </p> </td>
+          <td> 1 h</td>
+        </tr>
+
+        <tr>
+          <td > CO2 </td>
+          <td > {{co2value }} ppm</td>
+          <td class="descripcion-tabla"    [ngStyle]="{'background-color': co2BgColor , 'color':co2Color }"> {{co2Descripcion }} </td>
+          <td>Act: {{horaGrupoA}} </td>
+        </tr>
+
+
+      </tbody>
+
+
+    </table>
+  </div>
+
+
+
+
+
   <h3>Datos ambientales</h3>
 
 
   <div class="containergrid">
     <!-- ******  Humedad  *** -->
 
-    <app-gauge-card
-    title="Humedad"
-    icon="water_drop"
-    [update]="horaGrupoB"
-    append="%"
-    [index]="descripcionHumedad"
-    [value]="humedad"
-    [foreGround]="colorHumedad"
-    [backGround]="humedadBgColor"
-    [maxNumber]=100
-    >
+    <app-gauge-card title="Humedad" icon="water_drop" update="Act: {{horaGrupoB}}" append="%"
+      [index]="descripcionHumedad" [value]="humedad" [foreGround]="colorHumedad" [backGround]="humedadBgColor"
+      [maxNumber]=100>
     </app-gauge-card>
 
 
-<!-- Temperatura -->
+    <!-- Temperatura -->
 
-    <app-gauge-card
-    title="Temperatura"
-    icon="device_thermostat"
-    [update]="horaGrupoA"
-    append="C°"
-    [index]="temperaturaDescripcion"
-    [value]="temperatureValue"
-    [foreGround]="temperaturaColor"
-    [backGround]="temperaturaBgColor"
-    [maxNumber]=50
-    >
+    <app-gauge-card title="Temperatura" icon="device_thermostat" update="Act: {{horaGrupoA}}" append="C°"
+      [index]="temperaturaDescripcion" [value]="temperatureValue" [foreGround]="temperaturaColor"
+      [backGround]="temperaturaBgColor" [maxNumber]=50>
     </app-gauge-card>
 
-    <!-- Presion barometrica -->
+<app-wind-card
+[update]="horaGrupoB"
+ [grados]="directionSocket"
+ [speed]="windSpeed" >
+</app-wind-card>
 
-  <app-gauge-card
-    title="Presión Barometrica"
-    icon="speed"
-    [update]="horaGrupoA"
-    append="hPa"
-    [index]="presionDescripcion"
-    [value]="pressureValue"
-    [foreGround]="presionColor"
-    [backGround]="presionBgColor"
-    [maxNumber]=1020
-    >
+<!--
+    <app-gauge-card title="Vientos" icon="air" update="Act: {{horaGrupoB}}" append="km/h"
+      [index]="velocidadVientoDescripcion" [value]="windSpeed" [label]="directionSocket"
+      [foreGround]="velocidaVientoColor" [backGround]="velocidadVientoBgColor" [maxNumber]=118>
+    </app-gauge-card>
+-->
+
+
+    <!-- uv -->
+    <app-gauge-card title="Rayos UV" icon="wb_sunny" update="Act: {{horaGrupoA}}" append="Uv" [index]="descripcionUv"
+      [value]="ryValue" label="" [foreGround]="colorUv" [backGround]="uvBgColor" [maxNumber]=11>
     </app-gauge-card>
 
 
-
-
-    <app-gauge-card
-    title="Altitud"
-    icon="terrain"
-    [update]="horaGrupoA"
-    append="msnm"
-    [index]="altitudDescripcion"
-    [value]="altitudeValue"
-    [foreGround]="altitudColor"
-    [backGround]="altitudBgColor"
-    [maxNumber]=3500
-    >
-    </app-gauge-card>
   </div>
 
   <div class="containergrid">
-<app-gauge-card
-    title="Viento"
-    icon="air"
-    [update]="horaGrupoB"
-    append="km/h"
-    [index]="velocidadVientoDescripcion"
-    [value]="windSpeed"
-  [foreGround]="velocidaVientoColor"
-    [backGround]="velocidadVientoBgColor"
-    [maxNumber]=118
-    >
+
+    <!-- Presion barometrica -->
+    <app-gauge-card title="Pres. Atm." icon="speed" update="Act: {{horaGrupoA}}" append="" label="hPa"
+      [index]="presionDescripcion" [value]="pressureValue" [foreGround]="presionColor" [backGround]="presionBgColor"
+      [maxNumber]=1020>
     </app-gauge-card>
 
-    <!-- uv -->
-    <app-gauge-card
-    title="Rayos UV"
-    icon="wb_sunny"
-    [update]="horaGrupoA"
-    append="Uv"
-    [index]="descripcionUv"
-    [value]="ryValue"
-    [foreGround]="colorUv"
-    [backGround]="uvBgColor"
-    [maxNumber]=11
-    >
-    </app-gauge-card>
 
-<!-- Precipitacion -->
-   <app-gauge-card
-    title="Precipitación"
-    icon="cloud"
-    update="Promedio 24 hrs"
-    append="mm"
-    [index]="lluviaDescripcion"
-    [value]="precipitacion_tr"
-    [foreGround]="lluviaColor"
-    [backGround]="lluviaBgColor"
-    [maxNumber]=60
-    >
+
+
+    <app-gauge-card title="Altitud" icon="terrain" update="Act: {{horaGrupoA}}" append="m" label=""
+      [index]="altitudDescripcion" [value]="altitudeValue" [foreGround]="altitudColor" [backGround]="altitudBgColor"
+      [maxNumber]=3500>
+    </app-gauge-card>
+    <!-- Precipitacion -->
+    <app-gauge-card title="Precipitación" icon="cloud" update="Promedio 24 hrs" append="mm" [index]="lluviaDescripcion"
+      [value]="precipitacion_tr" [foreGround]="lluviaColor" [backGround]="lluviaBgColor" [maxNumber]=60>
     </app-gauge-card>
     <!-- tds-->
-   <app-gauge-card
-    title="TDS"
-    icon="science"
-    update="Promedio 24 hrs"
-    append="tds"
-    index="Fuerte"
-    [value]="tds_tr"
-    foreGround="E74C3C"
-    backGround="#FADBD8"
-    [maxNumber]=1200
-    >
+    <app-gauge-card title="TDS" icon="science" update="Promedio 24 hrs" append="tds" [index]="tdsDescripcion"
+      [value]="tds_tr" [foreGround]="tdsColor" [backGround]="tdsBgColor" [maxNumber]=1200>
     </app-gauge-card>
 
   </div>
-
-  <h3>Contaminantes</h3>
-
-
-<table>
-  <thead>
-  <tr>
-    <th>Tipo</th>
-    <th>Cantidad</th>
-    <th>Calidad</th>
-    <th>Tiempo promedio</th>
-
-
-  </tr>
-  </thead>
-<tbody>
-  <tr>
-      <td> PM 10 </td>
-      <td> {{pm1}} </td>
-      <td [ngStyle]="{'background-color': particulasPM10BGColor , 'color': particulasPM10Color }" > {{particulasPM10Descripcion}} </td>
-      <td> 12h </td>
-  </tr>
-
-    <tr>
-      <td> PM 2.5 </td>
-      <td> {{pm2_5}} </td>
-      <td [ngStyle]="{'background-color': particulas2_5bgColor , 'color': particulas2_5Color }" > {{particulas2_5Descripcion }} </td>
-      <td> 12h </td>
-  </tr>
-
-      <tr>
-      <td> Ozono </td>
-      <td> {{o3value }} ppm </td>
-      <td [ngStyle]="{'background-color': ozonoBgColor ,   'color':ozonoColor }" > {{ozonoDescripcion }} </td>
-      <td> 1h </td>
-  </tr>
-
-       <tr>
-      <td> CO2 </td>
-      <td> {{co2value }} ppm</td>
-      <td [ngStyle]="{'background-color': co2BgColor , 'color':co2Color }" > {{co2Descripcion }} </td>
-      <td> 8h </td>
-  </tr>
-
-
-</tbody>
-
-
-</table>
-
-

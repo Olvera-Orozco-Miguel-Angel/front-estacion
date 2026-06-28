@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { DashboardViewComponent } from './components/dashboard-view/dashboard-view.component';
 import { BoardNuevoComponent } from './board-nuevo/board-nuevo.component';
 import { GaugeCardComponent } from './gauge-card/gauge-card.component';
+import { WindCardComponent } from './wind-card/wind-card.component';
 
 const config: SocketIoConfig = {
   url: 'http://estacion.ccaitese.com:3000/', //url: 'http://localhost:3000',  http://estacion.ccaitese.com:3000/'
@@ -19,7 +20,8 @@ const config: SocketIoConfig = {
     AppComponent,
     DashboardViewComponent,
     BoardNuevoComponent,
-    GaugeCardComponent
+    GaugeCardComponent,
+    WindCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +30,7 @@ const config: SocketIoConfig = {
 
     SocketIoModule.forRoot(config),
     HttpClientModule,
-    
+
 
   ],
   providers: [],

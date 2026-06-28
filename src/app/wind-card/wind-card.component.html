@@ -1,0 +1,37 @@
+<div class="rain-card-container">
+  <div class="flex-container">
+    <h2 class="contaminatLevel__title ">Viento</h2>
+    <div>
+      <p class="indices" [ngStyle]="{'background-color':velocidadVientoBgColor ,'color':velocidaVientoColor }" >{{velocidadVientoDescripcion}} </p>
+    </div>
+  </div>
+
+  <!-- contenedor a -->
+  <div class="content-card flex-container" [ngStyle]="{'color':velocidaVientoColor}" >
+      <div  class="direccion-container"  >
+
+        <span> {{direccion }} </span>
+        <!-- aguja
+        <img src="/assets/aguja.png" class="img-aguja" alt="">
+        -->
+      </div>
+
+      <div class="speed-container"  >
+        <div class="flex-container">
+
+          <p class="speed">{{speed}} </p>
+          <span class="km" >Km/h</span>
+        </div>
+
+      </div>
+  </div>
+
+  <div class="gauge_footer">
+    <p>Act: {{update}}</p>
+    <div>
+      <span class="material-icons imagenes-svg" [ngStyle]="{'color':velocidaVientoColor  }">air</span>
+    </div>
+  </div>
+
+</div>
+

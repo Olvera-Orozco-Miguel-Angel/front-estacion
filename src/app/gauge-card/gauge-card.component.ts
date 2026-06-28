@@ -16,5 +16,6 @@ export class GaugeCardComponent {
   @Input() foreGround:string='';
   @Input() backGround:string='';
   @Input() maxNumber:number=0;
+  @Input() label:any ="";
 
 }

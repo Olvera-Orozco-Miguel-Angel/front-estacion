@@ -2,7 +2,7 @@
   <div class="flex-container">
     <h2 class="contaminatLevel__title ">{{title}}</h2>
     <div >
-      <span class="material-icons imagenes-svg" [ngStyle]="{ 'color': foreGround }"  >{{icon}}</span>
+    <p class="indices" [ngStyle]="{'background-color': backGround , 'color': foreGround }">{{index}}</p>
     </div>
   </div>
   <div class="gauge_header contaminatLevel__gauge">
@@ -12,15 +12,19 @@
      cap="round"
      [max]="maxNumber"
      [size]=150
+     [label]="label"
      [foregroundColor]="foreGround"
-     [backgroundColor]="backGround" [append]="append">
+     [backgroundColor]="backGround"
+     [append]="append">
     </ngx-gauge>
 
   </div>
 
   <div class="gauge_footer">
-    <p>Últ. act.: {{update}}</p>
-    <p class="indices" [ngStyle]="{'background-color': backGround , 'color': foreGround }">{{index}}</p>
+    <p>{{update}}</p>
+     <div >
+      <span class="material-icons imagenes-svg" [ngStyle]="{ 'color': foreGround }"  >{{icon}}</span>
+    </div>
   </div>
 
 </div>

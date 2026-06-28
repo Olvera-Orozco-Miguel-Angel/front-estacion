@@ -1,14 +1,17 @@
-import { Component } from '@angular/core';
+import { Component ,OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { SocketServerService } from 'src/app/services/socket-server.service';
 import { DataFetchManagerService } from 'src/app/services/data-fetch-manager.service';
 import Chart from 'chart.js/auto'
 import { HostListener } from '@angular/core';
+
 @Component({
   selector: 'app-dashboard-view',
+ // standalone:true,
+ // imports:[RainCardComponent],
   templateUrl: './dashboard-view.component.html',
   styleUrls: ['./dashboard-view.component.css']
 })
-export class DashboardViewComponent {
+export class DashboardViewComponent implements OnInit, AfterViewInit {
 
     horaGrupoB:any;
         horaGrupoA:any;
@@ -66,7 +69,7 @@ this.socket.getGrupoADataSocket().subscribe((message:any)=>{
    // this.pm10= message.pm100_env  ;
         this.ryValue =Number(  message.uv);
 
-    this.windSpeed = message.windSpeed;
+    this.windSpeed = Number( message.windSpeed) ?? 0.0;
     this.o3value = message.ozono;
     this.co2value = message.co2;
     this.directionSocket = message.direction;
@@ -75,12 +78,18 @@ this.socket.getGrupoADataSocket().subscribe((message:any)=>{
     this.precipitacion_tr =message.lm2;
     this.registroLluvia = message.ultimoRegistroHora;
 
-     const ahora  =  new Date();
-     this.horaGrupoA = ahora.toLocaleTimeString('es-MX',{
-        hour :'2-digit',
+     let fecha  =  new Date(message.horaEnvioGrupoA);
+      console.log("esta es la fecha --->",fecha);
+     this.horaGrupoA = fecha.toLocaleString('es-MX',{
+
+      hour :'2-digit',
         minute:'2-digit',
      });
-
+  this.configuracionUV(Number(this.ryValue) ?? 0);
+ this.configuracionTemperatura(Number(this.temperatureValue)??0);
+this.configuracionPresion(Number(this.pressureValue) ?? 0);
+this.configuracionAltitud(Number(this.altitudeValue)?? 0);
+this.configuracionCO2(Number(this.co2value) ?? 0);
 
 });
 this.socket.getGrupoBDataSocket().subscribe((message:any)=>{
@@ -90,7 +99,7 @@ this.socket.getGrupoBDataSocket().subscribe((message:any)=>{
     this.altitudeValue = message.altitud;
 
     this.ryValue =Number(  message.uv);
-    this.windSpeed = Number( message.windSpeed);
+    this.windSpeed = Number( message.windSpeed) ?? 0.0;
     this.o3value = message.ozono;
     this.co2value = message.co2;
     this.directionSocket = message.direction;
@@ -99,12 +108,16 @@ this.socket.getGrupoBDataSocket().subscribe((message:any)=>{
     this.precipitacion_tr =message.lm2;
     this.registroLluvia = message.ultimoRegistroHora;
 
-     const ahora  =  new Date();
-     this.horaGrupoB = ahora.toLocaleTimeString('es-MX',{
+    let fecha  =  new Date(message.horaEnvioGrupoB);
+     this.horaGrupoB = fecha.toLocaleString('es-MX',{
         hour :'2-digit',
         minute:'2-digit',
      });
-  this.configuracionVelocidadViento(Number(this.windSpeed) ?? 0);
+  this.configuracionLluvia(Number(this.precipitacion_tr) ?? 0);
+this.configuracionHumedadRelativa(Number(this.humedad)?? 0);
+
+this.configuracionOzono(Number(this.o3value ));
+
 
 });
 
@@ -133,14 +146,14 @@ this.socket.getGrupoBDataSocket().subscribe((message:any)=>{
     this.precipitacion_tr =message.lm2;
     this.registroLluvia = message.ultimoRegistroHora;
 
-     const ahora  =  new Date();
-     this.horaGrupoB = ahora.toLocaleTimeString('es-MX',{
+    let fecha  =  new Date(message.horaEnvioGrupoB);
+          console.log("esta es la fecha --->",message.horaEnvioGrupoB);
+     this.horaGrupoB = fecha.toLocaleString('es-MX',{
         hour :'2-digit',
         minute:'2-digit',
      });
 
    });
-this.configuracionVelocidadViento(Number(this.windSpeed) ?? 0);
 
 }
 
@@ -157,6 +170,7 @@ ngOnInit(): void {
    // this.pm2_5 = message.pm25;
    // this.pm10= message.pm100_env;
     this.windSpeed = message.windSpeed;
+    console.log("Esta es la velocidad del viento  --->",this.windSpeed)
     //this.o3value = message.ozono;
     this.co2value = message.co2;
     this.directionSocket = message.direction;
@@ -165,13 +179,20 @@ ngOnInit(): void {
     this.precipitacion_tr =message.lm2;
     this.registroLluvia = message.ultimoRegistroHora;
 
-    this.configuracionTemperatura();
-    this.configuracionUV();
-    this.configuracionPresion(Number(this.pressureValue));
+    console.log(message.horaEnvioGrupoB ?? "nada papito");
+
+
+
+  this.configuracionTemperatura(Number(this.temperatureValue) ?? 0);
+this.configuracionHumedadRelativa(Number(this.humedad));
+this.configuracionPresion(Number(this.pressureValue)?? 0);
 this.configuracionAltitud(Number(this.altitudeValue));
-this.configuracionHumedadRelativa(Number( this.humedad));
+this.configuracionOzono(Number(this.o3value ));
+this.configuracionParticulas2_5(Number(this.pm2_5));
+this.configuracionParticulasPM10(Number(this.pm10));
 this.configuracionCO2(Number(this.co2value));
-this.configuracionVelocidadViento(Number(this.windSpeed)??  0);
+  this.configuracionLluvia(Number(this.precipitacion_tr));
+  this.configuracionUV(Number(this.ryValue)?? 0);
 
 
   });
@@ -187,8 +208,12 @@ const data = respuesta;
   this.pm1 = data[0].pm1_0 ?? 0;
   this.pm2_5 = data[0].pm2_5 ?? 0;
   this.pm10 = data[0].pm10 ?? 0;
-  this.configuracionParticulas2_5(Number(this.pm2_5));
-this.configuracionParticulasPM10(Number(this.pm10));
+
+  console.log("pm25",this.pm2_5);
+    console.log("pm 10 ",this.pm10);
+
+  this.configuracionParticulas2_5(Number(this.pm2_5) ?? 0);
+this.configuracionParticulasPM10(Number(this.pm10) ?? 0 );
 });
 
 //este metodo obtiene los datos de la lluvia y tds, en un plazo de 24 hrs
@@ -197,7 +222,7 @@ this.data_fetch_service.obtenerRainDatos().subscribe(respuesta=>{
   const precipitacion_tr = data[0].total_lluvia ?? 0;
   const tds_tr = data[0].promedio_tds ?? 0;
   this.configuracionLluvia(Number(this.precipitacion_tr));
-
+  this.configuracionTds(Number(this.tds_tr));
 });
 
 
@@ -206,17 +231,20 @@ this.data_fetch_service.obtenerRainDatos().subscribe(respuesta=>{
 
 
 ngAfterViewInit():void {
+
   // Código para el método AfterViewInit
- this.configuracionTemperatura();
-this.configuracionHumedadRelativa(Number(this.humedad));
-this.configuracionPresion(Number(this.pressureValue));
-this.configuracionAltitud(Number(this.altitudeValue));
-this.configuracionOzono(Number(this.o3value ));
-this.configuracionParticulas2_5(Number(this.pm2_5));
-this.configuracionParticulasPM10(Number(this.pm10));
-this.configuracionCO2(Number(this.co2value));
-  this.configuracionLluvia(Number(this.precipitacion_tr));
-  this.configuracionVelocidadViento(Number(this.windSpeed) ?? 0);
+  this.configuracionUV(Number(this.ryValue) ?? 0);
+ this.configuracionTemperatura(Number(this.temperatureValue)??0);
+this.configuracionPresion(Number(this.pressureValue) ?? 0);
+this.configuracionAltitud(Number(this.altitudeValue)?? 0);
+this.configuracionCO2(Number(this.co2value) ?? 0);
+
+//this.configuracionOzono(Number(this.o3value ));
+//this.configuracionParticulas2_5(Number(this.pm2_5));
+//this.configuracionParticulasPM10(Number(this.pm10) );
+  this.configuracionLluvia(Number(this.precipitacion_tr) ?? 0);
+ // this.configuracionVelocidadViento(Number(this.windSpeed) ?? 0);
+this.configuracionHumedadRelativa(Number(this.humedad)?? 0);
 
 }
 
@@ -224,38 +252,38 @@ this.configuracionCO2(Number(this.co2value));
 temperaturaColor:string ="";
 temperaturaDescripcion:string="";
 temperaturaBgColor :string ="";
-configuracionTemperatura(){
-  if (this.temperatureValue<= 0 )  {
+configuracionTemperatura(temperatura:number){
+  if (temperatura <= 0 )  {
       // muy frio #0033CC
 this.temperaturaColor = "#0033CC";
 this.temperaturaDescripcion = "Muy frio"
 
   }
-  else if(this.temperatureValue >0 && this.temperatureValue <=10){
+  else if(temperatura >0 && temperatura <=10){
 // Frio #3399FF
 this.temperaturaColor = "#3399FF";
 this.temperaturaDescripcion = "Frio";
   }
-    else if(this.temperatureValue >10 && this.temperatureValue <=20){
+    else if(temperatura >10 && temperatura <=20){
 //Fresco #33CCCC
 this.temperaturaColor = "#33CCCC";
 this.temperaturaDescripcion = "Fresco";
   }
-    else if(this.temperatureValue >20 && this.temperatureValue <=25){
+    else if(temperatura >20 && temperatura <=25){
 // #2ECC71 Templada
 console.log("Se supone que debe entrar aquí");
 this.temperaturaColor = "#2ECC71";
 this.temperaturaDescripcion = "Templado";
-  } else if(this.temperatureValue >25 && this.temperatureValue <=30){
+  } else if(temperatura >25 && temperatura<=30){
 // Cálida #F1C40F
 this.temperaturaColor = "#F1C40F";
 this.temperaturaDescripcion = "Calido";
-  }else if(this.temperatureValue >30 && this.temperatureValue <=35){
+  }else if(temperatura >30 && temperatura <=35){
 // Calurosa Calurosa
 this.temperaturaColor = "#E67E22";
 this.temperaturaDescripcion = "Calurosa";
   }
-  else if(this.temperatureValue >35 ){
+  else if(temperatura >35 ){
 // ##E74C3C Muy calurosa
 this.temperaturaColor = "#E74C3C";
 this.temperaturaDescripcion = "Muy Calurosa";
@@ -292,21 +320,21 @@ colorUv:string="";
 descripcionUv:string="";
 uvBgColor :string="";
 
-configuracionUV(){
+configuracionUV(rayos:number){
 
-  if (this.ryValue >= 0 && this.ryValue <= 2) {
+  if (rayos >= 0 && rayos <= 2) {
     this.colorUv = "#2ECC71";
     this.descripcionUv = "Bajo";
-  }else if(this.ryValue>=3 && this.ryValue <=5){
+  }else if(rayos>=3 && rayos <=5){
 this.colorUv = "#F1C40F";
     this.descripcionUv = "Moderado";
-  }  else if(this.ryValue>=6 && this.ryValue <=7){
+  }  else if(rayos >=6 && rayos <=7){
     this.colorUv = "#E67E22";
     this.descripcionUv = "Alto";
-  }else if(this.ryValue>=8 && this.ryValue <= 10){
+  }else if(rayos >=8 && rayos<= 10){
     this.colorUv = "#E74C3C";
     this.descripcionUv = "Muy Alto";
-  }else if(this.ryValue >=11 ){
+  }else if(rayos >=11 ){
     this.colorUv = "#8E44AD";
     this.descripcionUv = "Muy Alto";
   }
@@ -363,13 +391,14 @@ this.altitudBgColor = this.lightenColor(this.altitudColor, 0.75 );
 
 /*
 ozono y particulas
-| Índice  | Nivel               | Color oficial |
-| ------- | ------------------- | ------------- |
-| 0–50    | Buena               | Verde         |
-| 51–100  | Aceptable           | Amarillo      |
-| 101–150 | Mala                | Naranja       |
-| 151–200 | Muy mala            | Rojo          |
-| >200    | Extremadamente mala | Morado        |
+| Calidad del aire    | Nivel de riesgo asociado | Al entrar en vigor la NOM (µg/m³) | A partir del 27 dic 2023 (µg/m³) | A partir del 27 dic 2025 (µg/m³) |
+| ------------------- | ------------------------ | --------------------------------- | -------------------------------- | -------------------------------- |
+| Buena               | Bajo                     | ≤ 15                              | ≤ 15                             | ≤ 15                             |
+| Aceptable           | Moderado                 | >15 y ≤41                         | >15 y ≤33                        | >15 y ≤25                        |
+| Mala                | Alto                     | >41 y ≤79                         | >33 y ≤79                        | >25 y ≤79                        |
+| Muy Mala            | Muy Alto                 | >79 y ≤130                        | >79 y ≤130                       | >79 y ≤130                       |
+| Extremadamente Mala | Extremadamente Alto      | >130                              | >130                             | >130                             |
+
 
 */
 
@@ -377,79 +406,106 @@ particulas2_5Color:string="";
 particulas2_5Descripcion :string="";
 particulas2_5bgColor:string="";
 configuracionParticulas2_5(particulas:number ){
-if (particulas>200) {
+if (particulas>130) {
    this.particulas2_5Color = "#8E44AD";
-  this.particulas2_5Descripcion="Extremo Mala";
-}else if ( particulas >=151) {
+  this.particulas2_5Descripcion="Extremo Alto";
+}else if ( particulas >79) {
   this.particulas2_5Color = "#E74C3C";
-  this.particulas2_5Descripcion="Muy Mala";
-}else if (particulas >=101) {
+  this.particulas2_5Descripcion="Muy Alto";
+}else if (particulas >25) {
     this.particulas2_5Color = "#E67E22";
-  this.particulas2_5Descripcion="Mala";
-}else if (particulas >=51) {
+  this.particulas2_5Descripcion="Alto";
+}else if (particulas >15) {
   this.particulas2_5Color= "#F1C40F";
-  this.particulas2_5Descripcion="Aceptable";
+  this.particulas2_5Descripcion="Moderado";
 
-}else if (particulas >=0 ) {
+}else if (particulas <=15 ) {
   this.particulas2_5Color = "#2ECC71";
-  this.particulas2_5Descripcion="Buena";
+  this.particulas2_5Descripcion="Bajo";
 }
 this.particulas2_5bgColor = this.lightenColor( this.particulas2_5Color , 0.75)
 
 }
+
+/*
+PM10
+| Calidad del aire    | Nivel de riesgo asociado | Al entrar en vigor la NOM (µg/m³) | A partir del 27 dic 2023 (µg/m³) | A partir del 27 dic 2025 (µg/m³) |
+| ------------------- | ------------------------ | --------------------------------- | -------------------------------- | -------------------------------- |
+| Buena               | Bajo                     | ≤ 45                              | ≤ 45                             | ≤ 45                             |
+| Aceptable           | Moderado                 | >45 y ≤70                         | >45 y ≤60                        | >45 y ≤50                        |
+| Mala                | Alto                     | >70 y ≤132                        | >60 y ≤132                       | >50 y ≤132                       |
+| Muy Mala            | Muy Alto                 | >132 y ≤213                       | >132 y ≤213                      | >132 y ≤213                      |
+| Extremadamente Mala | Extremadamente Alto      | >213                              | >213                             | >213                             |
+
+*/
 particulasPM10Color:string="";
 particulasPM10Descripcion:string="";
 particulasPM10BGColor:string="";
 configuracionParticulasPM10(particulas:number ){
-if(particulas>200) {
+if(particulas>213) {
    this.particulasPM10Color = "#8E44AD";
-  this.particulasPM10Descripcion ="Extremo Mala";
-}else if ( particulas >=151) {
+  this.particulasPM10Descripcion ="Extremo Alto";
+}else if ( particulas >132) {
  this.particulasPM10Color = "#E74C3C";
-  this.particulasPM10Descripcion="Muy Mala";
-}else if (particulas >=101) {
+  this.particulasPM10Descripcion="Muy Alto";
+}else if (particulas >50) {
    this.particulasPM10Color  = "#E67E22";
-  this.particulasPM10Descripcion ="Mala";
-}else if (particulas >=51) {
+  this.particulasPM10Descripcion ="Alto";
+}else if (particulas >45) {
   this.particulasPM10Color= "#F1C40F";
-  this.particulasPM10Descripcion="Aceptable";
+  this.particulasPM10Descripcion="Moderado";
 
-}else if (particulas >=0 ) {
+}else if (particulas <= 45 ) {
  this.particulasPM10Color  = "#2ECC71";
-  this.particulasPM10Descripcion="Buena";
+  this.particulasPM10Descripcion="Bajo";
 }
 this.particulasPM10BGColor = this.lightenColor(this.particulasPM10Color,0.75);
 }
 
+
+/*
+| Calidad del aire    | Nivel de riesgo asociado | Intervalo de ozono (O₃) promedio de una hora (ppm) |
+| ------------------- | ------------------------ | -------------------------------------------------- |
+| Buena               | Bajo                     | ≤ 0.035                                            |
+| Aceptable           | Moderado                 | > 0.035 y ≤ 0.090                                  |
+| Mala                | Alto                     | > 0.090 y ≤ 0.130                                  |
+| Muy Mala            | Muy Alto                 | > 0.130 y ≤ 0.175                                  |
+| Extremadamente Mala | Extremadamente Alto      | > 0.175                                            |
+
+https://www.diariooficial.gob.mx/normasOficiales/9314/semarnat_1_C/semarnat_1_C.html
+
+*/
 
 
 ozonoColor:string="";
 ozonoDescripcion:string="";
 ozonoBgColor:string="";
 configuracionOzono(ozono:number ){
-if(ozono>200) {
+if(ozono>0.175) {
    this.ozonoColor = "#8E44AD";
-  this.ozonoDescripcion ="Extremo Mala";
-}else if ( ozono >=151) {
+  this.ozonoDescripcion ="Extremo Alto";
+}else if ( ozono >0.130) {
  this.ozonoColor = "#E74C3C";
-  this.ozonoDescripcion="Muy Mala";
-}else if (ozono >=101) {
+  this.ozonoDescripcion="Muy Alto";
+}else if (ozono >0.090) {
    this.ozonoColor  = "#E67E22";
-  this.ozonoDescripcion ="Mala";
-}else if (ozono >=51) {
+  this.ozonoDescripcion ="Alto";
+}else if (ozono > 0.035) {
   this.ozonoColor= "#F1C40F";
-  this.ozonoDescripcion ="Aceptable";
+  this.ozonoDescripcion ="Moderado";
 
-}else if (ozono >=0 ) {
+}else if (ozono <= 0.035 ) {
  this.ozonoColor  = "#2ECC71";
-  this.ozonoDescripcion="Buena";
+  this.ozonoDescripcion="Bajo";
 }
 this.ozonoBgColor = this.lightenColor(this.ozonoColor,0.75);
 }
 
 
 /*
-co2
+nota:
+el co2 no cuenta con alguna norma sobre los indices de calidad
+referencia web https://www.integratecnologia.es/la-innovacion-necesaria/co2-care-la-solucion-iot-para-controlar-la-calidad-del-aire/
 | Rango CO₂ (ppm) | Nivel     | Descripción                                              | Color        | HEX sugerido |
 | --------------- | --------- | -------------------------------------------------------- | ------------ | ------------ |
 | 400 – 600       | Excelente | Aire muy limpio                                          | Verde oscuro | **#0B8F3A**  |
@@ -465,112 +521,29 @@ co2Descripcion:string="";
 co2BgColor:String="";
 configuracionCO2(co2:number){
 
-if(co2>=1500){
+if(co2>2100){
 
 this.co2Color="#C0392B";
-this.co2Descripcion="Malo";
+this.co2Descripcion="Muy Malo";
 
-}else if(co2>=1001){
+}else if(co2>1600){
 this.co2Color="#E67E22";
-this.co2Descripcion="Mediocre";
-}else if(co2>=801){
+this.co2Descripcion="Malo";
+}else if(co2>=1100){
 this.co2Color="#A9DFBF";
 this.co2Descripcion="Normal";
-}else if(co2>=601){
+}else if(co2>=700){
 this.co2Color="#2ECC71";
 this.co2Descripcion="Bueno";
-}else if(co2>=0){
-  this.co2Color="#0B8F3A";
+}else if(co2 >=400 || co2 <400 ){
+this.co2Color="#0B8F3A";
 this.co2Descripcion="Excelente";
 
 }
 this.co2BgColor = this.lightenColor(this.co2Color,0.75);
 }
 
-/*
-| Beaufort | Velocidad (km/h) | Clasificación     | Color sugerido | HEX     |
-| -------- | ---------------- | ----------------- | -------------- | ------- |
-| 0        | < 1              | Calma             | Verde oscuro   | #1E8449 |
-| 1        | 1 – 5            | Ventolina         | Verde          | #27AE60 |
-| 2        | 6 – 11           | Brisa ligera      | Verde claro    | #82E0AA |
-| 3        | 12 – 19          | Brisa suave       | Amarillo claro | #F7DC6F |
-| 4        | 20 – 28          | Brisa moderada    | Amarillo       | #F1C40F |
-| 5        | 29 – 38          | Brisa fresca      | Naranja claro  | #F39C12 |
-| 6        | 39 – 49          | Viento fuerte     | Naranja        | #E67E22 |
-| 7        | 50 – 61          | Viento muy fuerte | Rojo claro     | #EC7063 |
-| 8        | 62 – 74          | Temporal          | Rojo           | #E74C3C |
-| 9        | 75 – 88          | Temporal fuerte   | Rojo intenso   | #C0392B |
-| 10       | 89 – 102         | Temporal duro     | Morado claro   | #AF7AC5 |
-| 11       | 103 – 117        | Tormenta violenta | Morado         | #8E44AD |
-| 12       | ≥ 118            | Huracán           | Morado oscuro  | #5B2C6F |
 
-*/
-velocidaVientoColor :string="";
-velocidadVientoDescripcion:string="";
-velocidadVientoBgColor:string="";
-
-configuracionVelocidadViento(velocidad:number){
-  if(isNaN(velocidad) ){
-    console.warn("Velocidad del viento inválida, checar arduinos",velocidad);
-this.velocidaVientoColor= "#D5D8DC";
-this.velocidadVientoDescripcion= "Sin dato";
-return ;
-  }
- 
-
-    if (velocidad >= 118 ) {
-    this.velocidaVientoColor = "#5B2C6F";
-    this.velocidadVientoDescripcion ="Huracán";
-  }else if ( velocidad >= 103 ) {
- this.velocidaVientoColor = "#8E44AD";
-    this.velocidadVientoDescripcion ="Tormenta violenta";
-  }else if ( velocidad >= 89 ) {
- this.velocidaVientoColor = "#AF7AC5";
-    this.velocidadVientoDescripcion ="Temporal duro";
-  }else if ( velocidad >= 75 ) {
- this.velocidaVientoColor = "#C0392B";
-    this.velocidadVientoDescripcion ="Temporal fuerte";
-  }
-
-  else if ( velocidad >= 62 ) {
- this.velocidaVientoColor = "#E74C3C";
-    this.velocidadVientoDescripcion ="Temporal";
-  }
-  else if ( velocidad >= 50 ) {
- this.velocidaVientoColor = "#EC7063";
-    this.velocidadVientoDescripcion ="Viento muy fuerte";
-  }
-   else if ( velocidad >= 39 ) {
- this.velocidaVientoColor = "#E67E22";
-    this.velocidadVientoDescripcion ="Viento fuerte";
-  }
-  else if ( velocidad >= 29 ) {
- this.velocidaVientoColor = "#F39C12";
-    this.velocidadVientoDescripcion ="Brisa fresca";
-  }
-
-   else if ( velocidad >= 20 ) {
- this.velocidaVientoColor = "#F1C40F";
-    this.velocidadVientoDescripcion ="Brisa moderada";
-  }
-  else if ( velocidad >= 12 ) {
- this.velocidaVientoColor = "#F7DC6F";
-    this.velocidadVientoDescripcion ="Brisa suave";
-  } else if ( velocidad >= 6 ) {
- this.velocidaVientoColor = "#82E0AA";
-    this.velocidadVientoDescripcion ="Brisa ligera";
-  }
-  else if ( velocidad >= 1 ) {
- this.velocidaVientoColor = "#27AE60";
-    this.velocidadVientoDescripcion ="Ventolina";
-  }
-  else if ( velocidad <1 ) {
- this.velocidaVientoColor = "#1E8449 ";
-    this.velocidadVientoDescripcion ="Calma";
-  }
-  this.velocidadVientoBgColor = this.lightenColor(this.velocidaVientoColor, 0.75);
-  console.log("Estoy busncao ",this.velocidadVientoDescripcion);
-}
 /*
 
 
@@ -607,6 +580,61 @@ this.lluviaDescripcion ="Ligera" ;
 this.lluviaDescripcion ="Sin lluvia" ;
   }
 this.lluviaBgColor = this.lightenColor(this.lluviaColor,0.75);
+
+}
+
+
+
+/*
+https://www.carbotecnia.info/aprendizaje/quimica-del-agua/solidos-disueltos-totales-tds/
+| TDS (ppm o mg/L) | Nivel                         | Interpretación               | Color        | HEX         |
+| ---------------- | ----------------------------- | ---------------------------- | ------------ | ----------- |
+| 0 – 300          | Excelente                     | Agua muy pura                | Verde oscuro | **#0B8F3A** |
+| 301 – 600        | Nivel bueno                   | Buena calidad                | Verde        | **#27AE60** |
+| 601 – 900        | Nivel aceptable               | Aún consumible               | Amarillo     | **#F1C40F** |
+| 901 – 1200       | Nivel pobre / no recomendable | Alta concentración de sales  | Naranja      | **#E67E22** |
+| > 1200           | Inaceptable                   | No recomendable para consumo | Rojo         | **#C0392B** |
+
+*/
+tdsColor :string="";
+tdsDescripcion:string="";
+tdsBgColor:string="";
+configuracionTds(tds:number){
+ if(isNaN(tds) ){
+  console.warn("TDS inválido, checar arduinos o sensor",tds);
+  this.tdsColor= "#BDC3C7";
+  this.tdsDescripcion= "Sin dato";
+  this.tdsBgColor = this.lightenColor(this.tdsColor, 0.75);
+return ;
+  }
+if(tds >1200){
+  this.tdsColor ="#C0392B";
+  this.tdsDescripcion ="Inaceptable";
+}
+else if(tds >=901){
+
+    this.tdsColor ="#E67E22";
+  this.tdsDescripcion ="Poco Aceptable";
+
+}
+else if(tds >=601){
+  this.tdsColor ="#F1C40F";
+  this.tdsDescripcion ="Aceptable";
+}
+else if(tds >=301){
+  this.tdsColor ="#27AE60";
+  this.tdsDescripcion ="Bueno";
+}
+else if(tds >=0){
+
+   this.tdsColor ="#0B8F3A";
+  this.tdsDescripcion ="Excelente";
+}
+else{
+     this.tdsColor ="#BDC3C7";
+  this.tdsDescripcion ="?";
+}
+  this.tdsBgColor = this.lightenColor(this.tdsColor, 0.75);
 
 }
 

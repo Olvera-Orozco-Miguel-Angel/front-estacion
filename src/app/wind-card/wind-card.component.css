@@ -1,15 +1,30 @@
-.gauge__container{
+.rain-card-container{
+
   background-color: white;
   border-radius: 4%;
   /*border: 1px solid #7d7d7d;*/
 box-shadow: 10px 4px 12px rgba(0,0,0,0.25);
 height:217px;
+  width: 100%;
+display: flex;
+flex-direction:column;
+justify-content: space-between;
 
 }
-
-.gauge__container:hover{
+.rain-card-container:hover{
   cursor: pointer;
   transform: scale(1.02);
+}
+.content-card{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.img-aguja{
+  width: 150px;
+  height: fit-content;
 }
 .flex-container{
   width: 100%;
@@ -17,8 +32,8 @@ height:217px;
   justify-content: space-between ;
   align-items: center;
 
-
 }
+
 .gauge_header{
   width: 100%;
   display:flex ;
@@ -28,6 +43,7 @@ padding-top: 5px;
 padding-left: 3px;
 padding-right: 3px;
 }
+
 .gauge_footer{
  width: 100%;
  height: auto;
@@ -47,17 +63,32 @@ padding-right: 3px;
 }
 .imagenes-svg{
 
-    color: #fe6385;   /* ahora sí cambia el color */
+      /* ahora sí cambia el color */
   font-size: 40px;
+}
+.speed-container{
+  width: 50%;
+  text-align: start;
+
+}
+.direccion-container{
+width: 50%;
+text-align: center;
+font-size: 30px;
+font-weight: 600;
+
 }
 
 
+.speed{
+font-size: 36px;
+font-weight: 600;
+margin-right: 5px;
+border-bottom: black;
+}
+.km{
+margin-right: auto;
 
-.contaminatLevel__gauge{
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center; /*contaminant level y flex continaer contienen las mismas instrucciones*/
 }
 
 .indices{

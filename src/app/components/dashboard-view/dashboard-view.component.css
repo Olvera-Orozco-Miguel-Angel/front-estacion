@@ -12,6 +12,8 @@ body{
     background-color: white;
 }
 
+
+
 .barra{
     width: 90%;
     height: 70px;
@@ -20,11 +22,18 @@ body{
   justify-content: space-between;
      align-items: center;
 }
-.img-titulo{
+.img-icono{
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+}
+.titulo-imagen{
+position: relative;
+right: 35px;
+width: 80px;
+object-fit: cover;
+height: auto;
 }
 .img-barra{
   width: 60px;
@@ -124,8 +133,15 @@ h3{
   font-size: 24px;
 
 }
+.table-container{
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling:touch ;
+}
+
 table {
   width: 100%;
+  min-width: 600px;
   table-layout: fixed;
   border-collapse: collapse;
   border-spacing: 0;
@@ -144,19 +160,27 @@ thead{
 
 }
 th,td{
-  max-width: 1fr;
+
   text-align:start;
 border: 2px solid white;
 padding: 10px;
 font-weight: 500;
 
+}
 
 
+tr:nth-child(even){
+  background-color: #f3f4f6;
 }
 tr:hover{
   background-color: aliceblue;
 }
-
+.descripcion-tabla{
+width: fit-content;
+  padding: 8px;
+  border-radius: 40px;
+  text-align: center;
+}
 
 @media (max-width: 700px) {
   .containergrid {
@@ -170,3 +194,4 @@ tr:hover{
     grid-template-columns: 1fr;
   }
 }
+
